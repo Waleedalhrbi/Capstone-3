@@ -1,4 +1,4 @@
-package com.example.warehouseplatform.api;
+package com.example.warehouseplatform.Api;
 
 public class ApiException extends RuntimeException{
 

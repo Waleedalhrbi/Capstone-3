@@ -1,8 +1,8 @@
-package com.example.warehouseplatform.controller;
+package com.example.warehouseplatform.Controller;
 
 import com.example.warehouseplatform.Model.StorageProvider;
-import com.example.warehouseplatform.api.ApiResponse;
-import com.example.warehouseplatform.service.StorageProviderService;
+import com.example.warehouseplatform.Api.ApiResponse;
+import com.example.warehouseplatform.Service.StorageProviderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

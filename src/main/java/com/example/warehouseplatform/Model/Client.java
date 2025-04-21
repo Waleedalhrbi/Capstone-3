@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -42,4 +44,10 @@ public class Client {
     private Integer balance;
 
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    private Set<Request> requests;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    private Set<Review> reviews;
 }

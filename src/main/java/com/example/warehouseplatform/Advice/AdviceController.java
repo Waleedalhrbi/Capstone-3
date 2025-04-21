@@ -1,7 +1,7 @@
-package com.example.warehouseplatform.advice;
+package com.example.warehouseplatform.Advice;
 
-import com.example.warehouseplatform.api.ApiException;
-import com.example.warehouseplatform.api.ApiResponse;
+import com.example.warehouseplatform.Api.ApiException;
+import com.example.warehouseplatform.Api.ApiResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;

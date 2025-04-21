@@ -1,13 +1,11 @@
-package com.example.warehouseplatform.controller;
+package com.example.warehouseplatform.Controller;
 
 import com.example.warehouseplatform.Model.Client;
-import com.example.warehouseplatform.api.ApiResponse;
-import com.example.warehouseplatform.service.ClientService;
+import com.example.warehouseplatform.Api.ApiResponse;
+import com.example.warehouseplatform.Service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/client")

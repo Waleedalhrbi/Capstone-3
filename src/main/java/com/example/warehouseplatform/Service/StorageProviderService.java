@@ -1,12 +1,9 @@
-package com.example.warehouseplatform.service;
+package com.example.warehouseplatform.Service;
 
-import com.example.warehouseplatform.DTO.EmployeeDTO;
 import com.example.warehouseplatform.DTO.StorageProviderDTO;
-import com.example.warehouseplatform.Model.Employee;
 import com.example.warehouseplatform.Model.StorageProvider;
-import com.example.warehouseplatform.api.ApiException;
-import com.example.warehouseplatform.repository.StorageProviderRepository;
-import jakarta.validation.constraints.NotEmpty;
+import com.example.warehouseplatform.Api.ApiException;
+import com.example.warehouseplatform.Repository.StorageProviderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

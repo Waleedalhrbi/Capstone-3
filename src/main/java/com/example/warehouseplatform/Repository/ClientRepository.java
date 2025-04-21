@@ -1,4 +1,4 @@
-package com.example.warehouseplatform.repository;
+package com.example.warehouseplatform.Repository;
 
 import com.example.warehouseplatform.Model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.example.warehouseplatform.api;
+package com.example.warehouseplatform.Api;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

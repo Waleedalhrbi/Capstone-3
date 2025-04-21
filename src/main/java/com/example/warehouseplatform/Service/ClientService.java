@@ -1,9 +1,9 @@
-package com.example.warehouseplatform.service;
+package com.example.warehouseplatform.Service;
 
 import com.example.warehouseplatform.DTO.ClientDTO;
 import com.example.warehouseplatform.Model.Client;
-import com.example.warehouseplatform.api.ApiException;
-import com.example.warehouseplatform.repository.ClientRepository;
+import com.example.warehouseplatform.Api.ApiException;
+import com.example.warehouseplatform.Repository.ClientRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,5 +51,9 @@ public class ClientService {
         Client client = clientRepository.findClientById(id);
         if(client == null) throw new ApiException("client not found");
         clientRepository.deleteById(id);
+    }
+
+    public Client getClientById(Integer id){
+        return clientRepository.findClientById(id);
     }
 }
