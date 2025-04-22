@@ -59,7 +59,7 @@ public class RequestService {
 
 
         BookedDate bookedDate = new BookedDate();
-        bookedDate.setStart_date(request.getStart_date());
+        bookedDate.setStartDate(request.getStart_date());
         bookedDate.setEndDate(request.getEnd_date());
         bookedDateRepository.save(bookedDate);
 
@@ -72,5 +72,9 @@ public class RequestService {
     }
 
 
+
+    public Request getRequestById(Integer id){
+        return requestRepository.findRequestById(id);
+    }
 
 }

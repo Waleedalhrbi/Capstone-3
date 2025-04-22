@@ -27,18 +27,12 @@ public class WareHouseController {
 
 
 
-    @PostMapping("add")
-    public ResponseEntity addWareHouse (@Valid @RequestBody WareHouse wareHouse){
-        wareHouseService.addWareHouse(wareHouse);
+    @PostMapping("add/{providerId}")
+    public ResponseEntity addWareHouse (@Valid @RequestBody WareHouse wareHouse, @PathVariable Integer providerId){
+        wareHouseService.addWareHouse(wareHouse, providerId);
         return ResponseEntity.status(200).body(new ApiResponse("wareHouse added successfully"));
     }
 
-
-    @PutMapping("/assign/{warehouseId}/{providerId}")
-    public ResponseEntity assignWarehouseToProvider(@PathVariable Integer warehouseId, @PathVariable Integer providerId) {
-        wareHouseService.assignWarehouseToProvider(warehouseId, providerId);
-        return ResponseEntity.status(200).body(new ApiResponse("warehouse assigned to the provider"));
-    }
 
 
     @PutMapping("update/{id}")

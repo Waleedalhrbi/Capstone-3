@@ -35,7 +35,7 @@ public List<BookedDate> getAll(){
             throw new ApiException("the Booked Date is not found");
         }
 
-        bookedDate1.setStart_date(bookedDate.getStart_date());
+        bookedDate1.setStartDate(bookedDate.getStartDate());
         bookedDate1.setEndDate(bookedDate.getEndDate());
         bookedDateRepository.save(bookedDate1);
 
