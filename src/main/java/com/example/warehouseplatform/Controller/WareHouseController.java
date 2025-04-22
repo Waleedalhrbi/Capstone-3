@@ -34,6 +34,12 @@ public class WareHouseController {
     }
 
 
+    @PutMapping("/assign/{warehouseId}/{providerId}")
+    public ResponseEntity assignWarehouseToProvider(@PathVariable Integer warehouseId, @PathVariable Integer providerId) {
+        wareHouseService.assignWarehouseToProvider(warehouseId, providerId);
+        return ResponseEntity.status(200).body(new ApiResponse("warehouse assigned to the provider"));
+    }
+
 
     @PutMapping("update/{id}")
     public ResponseEntity updateWareHouse (@Valid @RequestBody WareHouse wareHouse, @PathVariable Integer id){

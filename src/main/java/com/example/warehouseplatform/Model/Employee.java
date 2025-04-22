@@ -19,15 +19,15 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty
+    @NotEmpty(message = "name must not be empty")
     @Column(columnDefinition = "varchar(30) not null")
     private String fullName;
 
-    @NotEmpty
+    @NotEmpty(message = "phone number must not be empty")
     @Column(columnDefinition = "varchar(10) not null")
     private String phoneNumber;
 
-    @NotEmpty
+    @NotEmpty(message = "nationality must not be empty")
     @Column(columnDefinition = "varchar(12) not null")
     private String nationality;
 

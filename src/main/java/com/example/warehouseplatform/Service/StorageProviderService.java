@@ -7,6 +7,7 @@ import com.example.warehouseplatform.Repository.StorageProviderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class StorageProviderService {
 
 
     public void addProvider(StorageProvider storageProvider) {
+        storageProvider.setLicenceDate(LocalDate.now());
        storageProviderRepository.save(storageProvider);
     }
 

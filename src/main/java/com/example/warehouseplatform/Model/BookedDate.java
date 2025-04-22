@@ -25,8 +25,6 @@ public class BookedDate {
     @Column(columnDefinition = "date")
     private LocalDate start_date;
 
-
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date")
     private LocalDate endDate;

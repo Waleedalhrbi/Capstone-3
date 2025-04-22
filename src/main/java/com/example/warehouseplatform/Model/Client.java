@@ -22,20 +22,20 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty
+    @NotEmpty(message = "username must not be empty")
     @Column(columnDefinition = "varchar(10) not null")
     private String username;
 
-    @NotEmpty
+    @NotEmpty(message = "password must not be empty")
     @Column(columnDefinition = "varchar(10) not null")
     private String password;
 
-    @NotEmpty
+    @NotEmpty(message = "email must not be empty")
     @Email
     @Column(columnDefinition = "varchar(20) not null")
     private String email;
 
-    @NotEmpty
+    @NotEmpty(message = "phone number must not be empty")
     @Column(columnDefinition = "varchar(20) not null")
     private String phoneNumber;
 

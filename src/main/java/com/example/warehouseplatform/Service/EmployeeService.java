@@ -33,6 +33,12 @@ public class EmployeeService {
         return employeeDTOList;
     }
 
+
+
+    public void addEmployee(Employee employee) {
+        employeeRepository.save(employee);
+    }
+
     public void assignEmployeeToProvider(Integer employeeId, Integer providerId) {
         StorageProvider storageProvider = storageProviderRepository.findStorageProviderById(providerId);
         Employee employee = employeeRepository.findEmployeeById(employeeId);
@@ -46,10 +52,6 @@ public class EmployeeService {
         }
 
         employee.setStorageProvider(storageProvider);
-        employeeRepository.save(employee);
-    }
-
-    public void addEmployee(Employee employee) {
         employeeRepository.save(employee);
     }
 

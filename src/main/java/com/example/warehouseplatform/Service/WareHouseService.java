@@ -1,7 +1,10 @@
 package com.example.warehouseplatform.Service;
 
 import com.example.warehouseplatform.Api.ApiException;
+import com.example.warehouseplatform.Model.Employee;
+import com.example.warehouseplatform.Model.StorageProvider;
 import com.example.warehouseplatform.Model.WareHouse;
+import com.example.warehouseplatform.Repository.StorageProviderRepository;
 import com.example.warehouseplatform.Repository.WareHouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import java.util.List;
 public class WareHouseService {
 
 private final WareHouseRepository wareHouseRepository;
+private final StorageProviderRepository storageProviderRepository;
 
 
 public List<WareHouse> getAll(){
@@ -25,7 +29,21 @@ public List<WareHouse> getAll(){
         wareHouseRepository.save(wareHouse);
     }
 
+    public void assignWarehouseToProvider(Integer warehouseId, Integer providerId) {
+        StorageProvider storageProvider = storageProviderRepository.findStorageProviderById(providerId);
+        WareHouse wareHouse = wareHouseRepository.findWareHouseById(warehouseId);
 
+        if(storageProvider == null) {
+            throw new ApiException("provider not found");
+        }
+
+        if(wareHouse == null) {
+            throw new ApiException("warehouse not found");
+        }
+
+        wareHouse.setStorageProvider(storageProvider);
+        wareHouseRepository.save(wareHouse);
+    }
 
     public void updateWareHouse(WareHouse wareHouse, Integer id) {
 

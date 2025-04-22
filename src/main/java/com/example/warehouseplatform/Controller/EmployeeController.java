@@ -29,7 +29,7 @@ public class EmployeeController {
     @PutMapping("/assign/{employeeId}/{providerId}")
     public ResponseEntity assignEmployeeToProvider(@PathVariable Integer employeeId, @PathVariable Integer providerId) {
         employeeService.assignEmployeeToProvider(employeeId, providerId);
-        return ResponseEntity.ok().body("employee assigned to the provider");
+        return ResponseEntity.ok().body(new ApiResponse("employee assigned to the provider"));
     }
     @PutMapping("/update/{id}")
     public ResponseEntity updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
