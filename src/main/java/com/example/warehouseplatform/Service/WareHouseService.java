@@ -23,24 +23,12 @@ public List<WareHouse> getAll(){
     return wareHouseRepository.findAll();
 }
 
-
-
-    public void addWareHouse(WareHouse wareHouse) {
-        wareHouseRepository.save(wareHouse);
-    }
-
-    public void assignWarehouseToProvider(Integer warehouseId, Integer providerId) {
+    public void addWareHouse(WareHouse wareHouse, Integer providerId) {
         StorageProvider storageProvider = storageProviderRepository.findStorageProviderById(providerId);
-        WareHouse wareHouse = wareHouseRepository.findWareHouseById(warehouseId);
 
         if(storageProvider == null) {
             throw new ApiException("provider not found");
         }
-
-        if(wareHouse == null) {
-            throw new ApiException("warehouse not found");
-        }
-
         wareHouse.setStorageProvider(storageProvider);
         wareHouseRepository.save(wareHouse);
     }
