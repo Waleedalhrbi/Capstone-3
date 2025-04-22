@@ -39,11 +39,6 @@ public class Client {
     @Column(columnDefinition = "varchar(20) not null")
     private String phoneNumber;
 
-    @NotNull
-    @Column(columnDefinition = "int not null")
-    private Integer balance;
-
-
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     private Set<Request> requests;

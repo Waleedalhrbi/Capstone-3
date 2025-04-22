@@ -26,10 +26,6 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @AssertFalse
-    @JsonIgnore
-    private Boolean isApproved;
-
 
     @NotEmpty(message = "the store type should not be null")
     @Pattern(regexp = "^(?i)(Small|Medium|Large)$")
@@ -51,6 +47,9 @@ public class Request {
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate end_date;
+
+
+    private Integer total_price;
 
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
