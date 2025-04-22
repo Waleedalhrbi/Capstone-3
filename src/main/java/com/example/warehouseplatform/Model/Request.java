@@ -26,9 +26,7 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @AssertFalse
-    @JsonIgnore
-    private Boolean isApproved;
+
 
 
     @NotEmpty(message = "the store type should not be null")
@@ -59,6 +57,8 @@ public class Request {
     @JsonIgnore
     private Client client;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate request_date;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "request")
     private Set<Review> reviews;

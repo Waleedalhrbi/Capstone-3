@@ -13,4 +13,6 @@ public interface BookedDateRepository extends JpaRepository<BookedDate,Integer> 
 
     boolean existsByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDate endDate, LocalDate startDate);
 
+    BookedDate findByStartDateAndEndDate(LocalDate startDate, LocalDate endDate);
+
 }

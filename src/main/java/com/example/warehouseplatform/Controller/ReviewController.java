@@ -1,6 +1,7 @@
 package com.example.warehouseplatform.Controller;
 
 import com.example.warehouseplatform.Api.ApiResponse;
+import com.example.warehouseplatform.Model.Request;
 import com.example.warehouseplatform.Model.Review;
 import com.example.warehouseplatform.Service.ReviewService;
 import jakarta.validation.Valid;
@@ -40,5 +41,40 @@ public class ReviewController {
     public ResponseEntity deleteReview(@PathVariable Integer id) {
         reviewService.deleteReview(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Review deleted successfully"));
+    }
+
+
+    // Ex endpoint
+    @GetMapping("/get-reviews-by-warehouse/{wareHouseId}")
+    public ResponseEntity getReviewsByWareHouseId(@PathVariable Integer wareHouseId) {
+        List<Review> reviews = reviewService.getReviewsByWareHouseId(wareHouseId);
+        return ResponseEntity.status(HttpStatus.OK).body(reviews);
+    }
+
+    // Ex endpoint
+    @GetMapping("/average-rating/{wareHouseId}")
+    public ResponseEntity getAverageRatingForWarehouse(@PathVariable Integer wareHouseId) {
+        return ResponseEntity.status(HttpStatus.OK).body((reviewService.calculateAverageRatingForWarehouse(wareHouseId)));
+    }
+
+    // Ex endpoint
+    @GetMapping("/top-warehouses-by-rating")
+    public ResponseEntity getTopWarehousesByRating() {
+        List<Request> topWarehouses = reviewService.getTopWarehousesByAverageRating();
+        return ResponseEntity.status(HttpStatus.OK).body(topWarehouses);
+    }
+
+    // Ex endpoint
+    @GetMapping("/get-reviews-by-client/{clientId}")
+    public ResponseEntity getReviewsByClientId(@PathVariable Integer clientId) {
+        List<Review> reviews = reviewService.getReviewsByClientId(clientId);
+        return ResponseEntity.status(HttpStatus.OK).body(reviews);
+    }
+
+    // Ex endpoint
+    @GetMapping("/get-reviews-by-warehouse-sorted/{wareHouseId}")
+    public ResponseEntity getReviewsByWarehouseIdSortedByDate(@PathVariable Integer wareHouseId) {
+        List<Review> reviews = reviewService.getReviewsByWarehouseIdSortedByDate(wareHouseId);
+        return ResponseEntity.status(HttpStatus.OK).body(reviews);
     }
 }
