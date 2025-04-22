@@ -55,8 +55,6 @@ public class WareHouse {
     private Integer price;
 
 
-    @AssertFalse
-    private Boolean isAvailable;
 
 
     private Integer usageCount=0;
