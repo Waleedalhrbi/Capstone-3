@@ -34,11 +34,9 @@ public List<WareHouse> getAll(){
         if (wareHouse1 == null) {
             throw new ApiException("the wareHouse is not found");
         }
-
         wareHouse1.setStorageArea(wareHouse.getStorageArea());
-        wareHouse1.setVentilation(wareHouse.getVentilation());
-        wareHouse1.setCooling(wareHouse.getCooling());
-        wareHouse1.setEnclosure(wareHouse.getEnclosure());
+        wareHouse1.setStore_size(wareHouse.getStore_size());
+        wareHouse1.setStore_type(wareHouse.getStore_type());
         wareHouse1.setPrice(wareHouse.getPrice());
         wareHouse1.setLocation(wareHouse1.getLocation());
         wareHouseRepository.save(wareHouse1);

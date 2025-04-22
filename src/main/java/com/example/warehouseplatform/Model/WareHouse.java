@@ -25,23 +25,10 @@ public class WareHouse {
     private String store_type;
 
 
-    @NotEmpty(message = "the ventilation options should not be null" )
-    @Pattern(regexp = "^(?i)(Natural|Mechanical|No ventilation )$",message = "the  ventilation options are : Natural , Mechanical ,No ventilation")
-    @Column(columnDefinition = "varchar(20) not null")
-    private String ventilation ;
-
-
-    @NotEmpty(message = "the cooling options should not be null" )
-    @Pattern(regexp = "^(?i)(Air-Conditioned|Refrigerated|No Cooling)$",message = "the  Cooling options are : Air-Conditioned, Refrigerated, No Cooling")
-    @Column(columnDefinition = "varchar(15) not null")
-    private String cooling ;
-
-
-
-    @NotEmpty(message = "the Enclosure options should not be empty" )
-    @Pattern(regexp ="^(?i)(Enclosed|Open)$",message = "the Enclosure options are : Enclosed ,Open")
-    @Column(columnDefinition = "varchar(8) not null")
-    private String enclosure ;
+    @NotEmpty(message = "the store type should not be null")
+    @Pattern(regexp = "^(?i)(Small|Medium|Large)$")
+    @Column(columnDefinition = "varchar(30) not null")
+    private String store_size;
 
 
     @NotEmpty(message = "the location should not be empty")
