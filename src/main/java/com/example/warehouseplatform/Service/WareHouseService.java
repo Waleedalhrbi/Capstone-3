@@ -26,9 +26,10 @@ public List<WareHouse> getAll(){
     public void addWareHouse(WareHouse wareHouse, Integer providerId) {
         StorageProvider storageProvider = storageProviderRepository.findStorageProviderById(providerId);
 
-        if(storageProvider == null) {
-            throw new ApiException("provider not found");
-        }
+        if(storageProvider == null) throw new ApiException("provider not found");
+
+        if(!storageProvider.getIsActive()) throw new ApiException("Storage provider is not active") ;
+
         wareHouse.setStorageProvider(storageProvider);
         wareHouseRepository.save(wareHouse);
     }

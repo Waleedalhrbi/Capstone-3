@@ -30,6 +30,4 @@ public class BookedDate {
     private LocalDate endDate;
 
 
-
-
 }

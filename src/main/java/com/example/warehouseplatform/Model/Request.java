@@ -65,4 +65,7 @@ public class Request {
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     @JsonIgnore
     private WareHouse wareHouse;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "request")
+    private Set<Complaint> complaints;
 }

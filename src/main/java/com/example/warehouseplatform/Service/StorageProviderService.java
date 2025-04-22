@@ -47,7 +47,7 @@ public class StorageProviderService {
         oldProvider.setEmail(provider.getEmail());
         oldProvider.setPhoneNumber(provider.getPhoneNumber());
         oldProvider.setIsActive(provider.getIsActive());
-        oldProvider.setPropertyLicence(provider.getPropertyLicence());
+        oldProvider.setLicence(provider.getLicence());
 
         storageProviderRepository.save(provider);
     }

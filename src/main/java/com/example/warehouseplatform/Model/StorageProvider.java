@@ -1,6 +1,7 @@
 package com.example.warehouseplatform.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -44,7 +45,7 @@ public class StorageProvider {
 
     @NotEmpty(message = "licence must not be empty")
     @Column(columnDefinition = "varchar(60) not null")
-    private String propertyLicence;
+    private String licence;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate licenceDate;
@@ -54,4 +55,7 @@ public class StorageProvider {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageProvider")
     private Set<WareHouse> wareHouses;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageProvider")
+    private Set<Complaint> complaints;
 }
