@@ -44,6 +44,7 @@ public class RequestService {
         }
 
         existingRequest.setStore_type(newRequestData.getStore_type());
+        existingRequest.setStore_size(newRequestData.getStore_size());
         existingRequest.setRequest_employee(newRequestData.getRequest_employee());
         existingRequest.setStart_date(newRequestData.getStart_date());
         existingRequest.setEnd_date(newRequestData.getEnd_date());

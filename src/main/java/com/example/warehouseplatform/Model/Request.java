@@ -30,6 +30,13 @@ public class Request {
     @JsonIgnore
     private Boolean isApproved;
 
+
+    @NotEmpty(message = "the store type should not be null")
+    @Pattern(regexp = "^(?i)(Small|Medium|Large)$")
+    @Column(columnDefinition = "varchar(30) not null")
+    private String store_size;
+
+
     @NotEmpty(message = "Please enter store type")
     @Pattern(regexp = "refrigerated|closed|open")
     @Column(columnDefinition = "VARCHAR(25) NOT NULL")
