@@ -17,6 +17,4 @@ public class ClientDTO {
     private String email;
     @NotEmpty
     private String phoneNumber;
-    @NotNull
-    private Integer balance;
 }

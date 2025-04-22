@@ -23,7 +23,7 @@ public class BookedDate {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date")
-    private LocalDate start_date;
+    private LocalDate startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date")

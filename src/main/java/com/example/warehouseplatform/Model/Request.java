@@ -52,6 +52,8 @@ public class Request {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate end_date;
 
+    private Integer Total_price;
+
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @JsonIgnore

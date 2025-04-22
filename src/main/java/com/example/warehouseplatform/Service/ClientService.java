@@ -25,7 +25,7 @@ public class ClientService {
         List<Client> clients = clientRepository.findAll();
         List<ClientDTO> clientDTOList = new ArrayList<>();
         for(Client c : clients) {
-            ClientDTO clientDTO = new ClientDTO(c.getUsername(),c.getEmail(),c.getPhoneNumber(),c.getBalance());
+            ClientDTO clientDTO = new ClientDTO(c.getUsername(),c.getEmail(),c.getPhoneNumber());
             clientDTOList.add(clientDTO);
         }
         return clientDTOList;
@@ -43,7 +43,6 @@ public class ClientService {
         client.setPassword(updatedClient.getPassword());
         client.setEmail(updatedClient.getEmail());
         client.setPhoneNumber(updatedClient.getPhoneNumber());
-        client.setBalance(updatedClient.getBalance());
         clientRepository.save(client);
     }
 
