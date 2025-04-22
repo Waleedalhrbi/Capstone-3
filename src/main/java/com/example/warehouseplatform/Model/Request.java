@@ -60,4 +60,9 @@ public class Request {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "request")
     private Set<Review> reviews;
+
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
+    @JsonIgnore
+    private WareHouse wareHouse;
 }

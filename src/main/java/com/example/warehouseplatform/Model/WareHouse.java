@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -59,5 +61,7 @@ public class WareHouse {
 
     private Integer usageCount=0;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wareHouse")
+    private Set<Request> requests;
 
 }
