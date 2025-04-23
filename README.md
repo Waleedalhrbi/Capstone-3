@@ -12,6 +12,7 @@ Responsible for implementing booking notifications, fines, booking extensions, a
 
 
 ✅ Endpoints Implemented by Waleed Alharbi
+
 📍 RequestController
 POST /api/v1/request/add/{clientId}/{warehouseId}
 ➤ Add a new request.
@@ -46,6 +47,7 @@ GET /api/v1/review/get-reviews-by-warehouse-sorted/{wareHouseId}
 ➤ Reviews sorted by date.
 
 ✅ Endpoints Implemented by Sahar Turki
+
 📍 WarehouseController
 GET /api/v1/warehouse/most-used/{storeSize}
 ➤ Most used warehouses.
@@ -93,6 +95,7 @@ PUT /api/v1/admin/approve-provider-licence-renew/{adminId}/{providerId}
 ➤ Approve license renewal.
 
 ✅ Endpoints Implemented by Khaled Alshehri
+
 📍 ClientController
 POST /api/v1/client/notify-booking-end/{requestId}
 ➤ Notify supplier when booking ends.
