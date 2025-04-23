@@ -64,7 +64,7 @@ public class SupplierService {
 
 
     public void notifyEndOfBooking(Integer requestId) {
-        Request request = requestRepository.findRequestById(requestId); // assuming you have this method
+        Request request = requestRepository.findRequestById(requestId);
 
         if (request == null) {
             throw new ApiException("Request not found");
