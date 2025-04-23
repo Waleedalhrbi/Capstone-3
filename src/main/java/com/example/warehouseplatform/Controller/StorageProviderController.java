@@ -3,6 +3,7 @@ package com.example.warehouseplatform.Controller;
 import com.example.warehouseplatform.Model.StorageProvider;
 import com.example.warehouseplatform.Api.ApiResponse;
 import com.example.warehouseplatform.Service.StorageProviderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class StorageProviderController {
 
 
     @PostMapping("/add")
-    public ResponseEntity addProvider(@RequestBody StorageProvider provider) {
+    public ResponseEntity addProvider(@Valid @RequestBody StorageProvider provider) {
         providerService.addProvider(provider);
         return ResponseEntity.ok().body(new ApiResponse("provider added"));
     }

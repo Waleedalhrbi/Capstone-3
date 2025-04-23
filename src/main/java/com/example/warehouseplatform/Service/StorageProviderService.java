@@ -24,7 +24,7 @@ public class StorageProviderService {
     public List<StorageProviderDTO> getAll() {
         List<StorageProvider> providers = storageProviderRepository.findAll();
         List<StorageProviderDTO> providerDTOList = new ArrayList<>();
-        for(StorageProvider s : providers) {
+        for (StorageProvider s : providers) {
             StorageProviderDTO providerDTO = new StorageProviderDTO(s.getUsername(), s.getEmail(), s.getPhoneNumber(), s.getIsActive());
             providerDTOList.add(providerDTO);
         }
@@ -33,28 +33,28 @@ public class StorageProviderService {
 
 
     public void addProvider(StorageProvider storageProvider) {
-        storageProvider.setLicenceDate(LocalDate.now());
-       storageProviderRepository.save(storageProvider);
+        storageProvider.setLicenseDate(LocalDate.now());
+        storageProviderRepository.save(storageProvider);
     }
 
     public void updateProvider(Integer id, StorageProvider provider) {
         StorageProvider oldProvider = storageProviderRepository.findStorageProviderById(id);
 
-        if(oldProvider == null) throw new ApiException("provider not found");
+        if (oldProvider == null) throw new ApiException("provider not found");
 
         oldProvider.setUsername(provider.getUsername());
         oldProvider.setPassword(provider.getPassword());
         oldProvider.setEmail(provider.getEmail());
         oldProvider.setPhoneNumber(provider.getPhoneNumber());
         oldProvider.setIsActive(provider.getIsActive());
-        oldProvider.setLicence(provider.getLicence());
+        oldProvider.setLicense(provider.getLicense());
 
         storageProviderRepository.save(provider);
     }
 
     public void deleteProvider(Integer id) {
         StorageProvider provider = storageProviderRepository.findStorageProviderById(id);
-        if(provider == null) throw new ApiException("provider not found");
+        if (provider == null) throw new ApiException("provider not found");
 
         storageProviderRepository.deleteById(id);
     }

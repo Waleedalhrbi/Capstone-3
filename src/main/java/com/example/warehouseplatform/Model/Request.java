@@ -26,9 +26,6 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-
-
     @NotEmpty(message = "the store type should not be null")
     @Pattern(regexp = "^(?i)(Small|Medium|Large)$")
     @Column(columnDefinition = "varchar(30) not null")

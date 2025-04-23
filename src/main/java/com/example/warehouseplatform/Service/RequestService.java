@@ -1,6 +1,7 @@
 package com.example.warehouseplatform.Service;
 
 import com.example.warehouseplatform.Api.ApiException;
+import com.example.warehouseplatform.DTO.EmailRequest;
 import com.example.warehouseplatform.Model.BookedDate;
 import com.example.warehouseplatform.Model.Client;
 import com.example.warehouseplatform.Model.Request;
@@ -22,7 +23,7 @@ public class RequestService {
     private final ClientService clientService;
     private final WareHouseRepository wareHouseRepository;
     private final BookedDateRepository bookedDateRepository;
-
+    private final EmailNotificationService emailNotificationService;
 
     public List<Request> getAllRequests() {
         return requestRepository.findAll();
@@ -65,16 +66,27 @@ public class RequestService {
         bookedDateRepository.save(bookedDate);
 
 
-
-
-
         request.setRequest_date(LocalDate.now());
         request.setClient(client);
         request.setWareHouse(wareHouse);
         wareHouse.setUsageCount(wareHouse.getUsageCount() + 1);
         request.setTotal_price(totalPrice);
 
+
+
         requestRepository.save(request);
+
+        String to = client.getEmail();
+        String subject = "Warehouse Request Confirmation";
+        String message = "Dear " + client.getUsername() + ",\n\n" +
+                "Your request for a " + request.getStore_size() + " " + request.getStore_type() +
+                " warehouse has been received.\n\nStart Date: " + request.getStart_date() +
+                "\nEnd Date: " + request.getEnd_date() +
+                "\nTotal Price: " + request.getTotal_price() +
+                "\n\nThank you for using our service!";
+
+        EmailRequest emailRequest = new EmailRequest(to,message, subject);
+        emailNotificationService.sendEmail(emailRequest);
     }
 
 

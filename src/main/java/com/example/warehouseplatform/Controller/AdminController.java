@@ -51,8 +51,11 @@ public class AdminController {
         return ResponseEntity.status(200).body(new ApiResponse("The Admin deleted successfully"));
     }
 
-
-
+    @PostMapping("/notify/{providerId}/{adminId}")
+    public ResponseEntity notifyExpiredLicense(@PathVariable Integer providerId, @PathVariable Integer adminId) {
+        adminService.notifyExpiredLicense(providerId, adminId);
+        return ResponseEntity.status(200).body(new ApiResponse("Notification sent successfully"));
+    }
 
 
 
