@@ -20,7 +20,7 @@ public class AdminService {
     private final SupplierComplaintRepository supplierComplaintRepository;
     private final EmailNotificationService emailNotificationService;
     private final ProviderComplaintRepository providerComplaintRepository;
-
+    private final ReviewService reviewService;
 
 public List<Admin> getAll(){
     return adminRepository.findAll();
@@ -188,6 +188,41 @@ public List<Admin> getAll(){
 
     }
 
+
+
+    public void approveRenewLicenceRequest(Integer adminId, Integer providerId){
+        Admin admin = adminRepository.findAdminById(adminId);
+        if (admin == null) {
+            throw new ApiException("the admin is not found");
+        }
+
+        StorageProvider provider = storageProviderRepository.findStorageProviderById(providerId);
+        if (provider == null) {
+            throw new ApiException("Provider not found");
+        }
+
+        if (!provider.getRenewLicenceRequest()){
+            throw new ApiException("Provider Licence is active ");
+        }
+
+        double providerAverageReviewRate =reviewService.providerAverageReview(providerId);
+        if (providerAverageReviewRate<2.5){
+            throw new ApiException("Provider Licence renew request is denied due to low rating ");
+        }
+
+        if(provider.getComplainCount()>=5){
+            throw new ApiException("Provider Licence renew request is denied due to many complains");
+
+        }
+
+        //renew if all conditions are met
+        provider.setIsActive(true);
+        provider.setLicenseDate(LocalDate.now());
+        storageProviderRepository.save(provider);
+
+
+
+    }
 
 
 

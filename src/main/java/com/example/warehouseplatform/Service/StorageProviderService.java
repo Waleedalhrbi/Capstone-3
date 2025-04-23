@@ -36,6 +36,7 @@ public class StorageProviderService {
 
 
     public void addProvider(StorageProvider storageProvider) {
+        storageProvider.setRenewLicenceRequest(false);
         storageProvider.setIsActive(false);
         storageProvider.setLicenseDate(LocalDate.now());
         storageProviderRepository.save(storageProvider);
