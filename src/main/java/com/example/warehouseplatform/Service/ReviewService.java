@@ -28,26 +28,38 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
-    public void addReview(Review review) {
-        Supplier supplier = supplierRepository.findSupplierById(review.getSupplier().getId());
+    public void addReview(Integer supplierId, Integer requestId, Review review) {
+
+        Supplier supplier = supplierRepository.findSupplierById(supplierId);
         if (supplier == null) {
-            throw new ApiException("supplier not found");
+            throw new ApiException("Supplier not found");
         }
 
-        Request request = requestService.getRequestById(review.getRequest().getId());
+
+        Request request = requestService.getRequestById(requestId);
         if (request == null) {
             throw new ApiException("Request not found");
         }
+
+
+        if (!request.getSupplier().getId().equals(supplierId)) {
+            throw new ApiException("Supplier did not create this request");
+        }
+
 
         if (review.getRating() < 1 || review.getRating() > 5) {
             throw new ApiException("Rating must be between 1 and 5");
         }
 
+
         review.setReview_date(LocalDate.now());
         review.setSupplier(supplier);
         review.setRequest(request);
+
+
         reviewRepository.save(review);
     }
+
 
     public void updateReview(Integer id, Review review) {
         Review existingReview = reviewRepository.findReviewById(id);
