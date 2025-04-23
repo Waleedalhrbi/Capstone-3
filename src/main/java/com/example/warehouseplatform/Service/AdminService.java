@@ -1,8 +1,11 @@
 package com.example.warehouseplatform.Service;
 
 import com.example.warehouseplatform.Api.ApiException;
+import com.example.warehouseplatform.DTO.EmailRequest;
 import com.example.warehouseplatform.Model.Admin;
+import com.example.warehouseplatform.Model.StorageProvider;
 import com.example.warehouseplatform.Repository.AdminRepository;
+import com.example.warehouseplatform.Repository.StorageProviderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,8 @@ import java.util.List;
 public class AdminService {
 
 private final AdminRepository adminRepository;
+private final StorageProviderRepository storageProviderRepository;
+private final EmailNotificationService emailNotificationService;
 
 
 public List<Admin> getAll(){
@@ -59,7 +64,23 @@ public List<Admin> getAll(){
     }
 
 
+    public void notifyExpiredLicense(Integer providerId, Integer adminId) {
+        StorageProvider storageProvider = storageProviderRepository.findStorageProviderById(providerId);
 
+        if(storageProvider == null) throw new ApiException("storage provider no found");
 
+        Admin admin = adminRepository.findAdminById(adminId);
+        if(admin == null) throw new ApiException("admin not found");
 
+        String subject = "License Expiration Notice";
+        String message = "Dear " + storageProvider.getUsername() + ",\n\n" +
+                "Your warehouse license has expired. Please renew it to continue using our platform.\n\n" +
+                "Regards,\n" + admin.getUsername();
+
+        EmailRequest request = new EmailRequest(storageProvider.getEmail(), message, subject);
+        emailNotificationService.sendEmail(request);
+    }
 }
+
+
+

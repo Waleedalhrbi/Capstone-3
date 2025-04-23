@@ -3,12 +3,10 @@ package com.example.warehouseplatform.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -17,7 +15,7 @@ import java.util.Set;
 @Setter
 @Entity
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class StorageProvider {
 
     @Id
@@ -40,15 +38,17 @@ public class StorageProvider {
     @NotEmpty(message = "phone number must not be empty")
     @Column(columnDefinition = "varchar(10) not null")
     private String phoneNumber;
-
+    @AssertFalse
+    @JsonIgnore
     private Boolean isActive;
 
     @NotEmpty(message = "licence must not be empty")
     @Column(columnDefinition = "varchar(60) not null")
-    private String licence;
+    private String license;
 
     @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate licenceDate;
+    @JsonIgnore
+    private LocalDate licenseDate;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageProvider")
     private Set<Employee> employees;
