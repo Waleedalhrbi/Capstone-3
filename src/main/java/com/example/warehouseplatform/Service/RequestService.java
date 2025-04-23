@@ -188,5 +188,9 @@ public class RequestService {
         }
     }
 
+    public List<Request> getRequestsByStoreType(String storeType) {
+        return requestRepository.findAllByStoreType(storeType);
+    }
+
 
 }

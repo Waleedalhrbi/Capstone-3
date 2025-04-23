@@ -17,4 +17,6 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
     List<Request> findRequestsBetweenDates(LocalDate start, LocalDate end);
 
     List<Request> findRequestsByWareHouseId(Integer id);
+
+    List<Request> findAllByStoreType(String storeType);
 }
