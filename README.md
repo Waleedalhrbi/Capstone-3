@@ -14,6 +14,7 @@ Responsible for implementing booking notifications, fines, booking extensions, a
 ✅ Endpoints Implemented by Waleed Alharbi
 
 📍 RequestController
+
 POST /api/v1/request/add/{clientId}/{warehouseId}
 ➤ Add a new request.
 
@@ -49,10 +50,12 @@ GET /api/v1/review/get-reviews-by-warehouse-sorted/{wareHouseId}
 ✅ Endpoints Implemented by Sahar Turki
 
 📍 WarehouseController
+
 GET /api/v1/warehouse/most-used/{storeSize}
 ➤ Most used warehouses.
 
 📍 SupplierController
+
 GET /api/v1/supplier/get-all-complains/{id}
 ➤ All supplier complaints.
 
@@ -60,10 +63,12 @@ GET /api/v1/supplier/approved-complaints/{id}
 ➤ Approved complaints for supplier.
 
 📍 SupplierComplaintController
+
 PUT /api/v1/supplier-complaint/file-complain-on-provider/{supplierId}/{requestId}
 ➤ File complaint on provider.
 
 📍 StorageProviderController
+
 PUT /api/v1/provider/renew-licence/{id}
 ➤ Renew license.
 
@@ -74,14 +79,17 @@ GET /api/v1/provider/get-all-complains/{id}
 ➤ All provider complaints.
 
 📍 ReviewController (Additional)
+
 GET /api/v1/review/get-average-provider-reviews/{providerId}
 ➤ Provider average rating.
 
 📍 ProviderComplaintController
+
 PUT /api/v1/provider-complaint/file-complain-on-supplier/{supplierId}/{requestId}
 ➤ Complaint on supplier.
 
 📍 AdminController
+
 PUT /api/v1/admin/validate-licence/{adminId}/{providerId}
 ➤ Validate license.
 
@@ -97,6 +105,7 @@ PUT /api/v1/admin/approve-provider-licence-renew/{adminId}/{providerId}
 ✅ Endpoints Implemented by Khaled Alshehri
 
 📍 ClientController
+
 POST /api/v1/client/notify-booking-end/{requestId}
 ➤ Notify supplier when booking ends.
 
@@ -110,10 +119,12 @@ POST /api/v1/client/reminder-before-end/{requestId}
 ➤ Send reminder 10 days before booking ends.
 
 📍 AdminController
+
 POST /api/v1/admin/notify-license-expired/{providerId}/{adminId}
 ➤ Notify provider of license expiration.
 
 📍 EmployeeController
+
 PUT /api/v1/employee/assign/{employeeId}/{providerId}
 ➤ Assign employee to provider.
 
