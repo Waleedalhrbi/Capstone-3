@@ -2,7 +2,6 @@ package com.example.warehouseplatform.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +23,6 @@ public class ProviderComplaint {
     @Column(columnDefinition = "varchar(250) not null")
     private String complaintMessage;
 
-    @AssertFalse
     private Boolean isApproved;
 
 

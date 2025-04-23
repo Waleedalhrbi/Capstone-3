@@ -57,5 +57,19 @@ public class StorageProviderController {
     @GetMapping("approved-complaints/{id}")
     public ResponseEntity approvedComplaints(@PathVariable Integer id) {
         return ResponseEntity.ok().body(providerService.getAllApprovedComplain(id));
+
+
     }
+
+
+
+    // Ex endpoint
+    /// made by Sahar :13
+    /// returning all the complaints that the provider  with their status
+    @GetMapping("get-all-complains/{id}")
+    public ResponseEntity getAllComplaintsMadeByProvider(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(new ApiResponse("All the complains made by supplier :"+providerService.getAllComplaintsMadeByProvider(id)));
+    }
+
+
 }

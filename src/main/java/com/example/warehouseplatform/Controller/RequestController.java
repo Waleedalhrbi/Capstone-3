@@ -23,9 +23,9 @@ public class RequestController {
     }
 
     // Ex endpoint
-    @PostMapping("/add/{clientId}/{warehouseId}")
-    public ResponseEntity addRequest(@PathVariable Integer clientId, @PathVariable Integer warehouseId, @Valid @RequestBody Request request) {
-        requestService.addRequest(request, clientId,warehouseId);
+    @PostMapping("/add/{supplierId}/{warehouseId}")
+    public ResponseEntity addRequest(@PathVariable Integer supplierId, @PathVariable Integer warehouseId, @Valid @RequestBody Request request) {
+        requestService.addRequest(request, supplierId,warehouseId);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("Request added successfully"));
     }
 

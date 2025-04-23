@@ -90,4 +90,17 @@ public class StorageProviderService {
 
 
 
+    public List<ProviderComplaint> getAllComplaintsMadeByProvider(Integer providerId){
+        List<ProviderComplaint> providerComplaints=providerComplaintRepository.findProviderComplaintByStorageProvider_Id(providerId);
+        if (providerComplaints.isEmpty()){
+            throw new ApiException("the supplier has no complains made yet");
+        }
+        return providerComplaints;
+
+    }
+
+
+
+
+
 }

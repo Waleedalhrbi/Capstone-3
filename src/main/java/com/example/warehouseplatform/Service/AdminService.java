@@ -20,7 +20,7 @@ public class AdminService {
     private final SupplierComplaintRepository supplierComplaintRepository;
     private final EmailNotificationService emailNotificationService;
     private final ProviderComplaintRepository providerComplaintRepository;
-    private final ReviewService reviewService;
+
 
 public List<Admin> getAll(){
     return adminRepository.findAll();
@@ -92,11 +92,6 @@ public List<Admin> getAll(){
         StorageProvider provider = storageProviderRepository.findStorageProviderById(providerId);
         if (provider == null) {
             throw new ApiException("the provider is not found");
-        }
-
-        if (provider.getLicenseDate().isBefore(LocalDate.now().minusDays(365))) {
-            throw new ApiException("the provider license is expired, file a request to renew the licence");
-
         }
 
 
@@ -191,6 +186,7 @@ public List<Admin> getAll(){
 
 
     public void approveRenewLicenceRequest(Integer adminId, Integer providerId){
+
         Admin admin = adminRepository.findAdminById(adminId);
         if (admin == null) {
             throw new ApiException("the admin is not found");
@@ -205,18 +201,17 @@ public List<Admin> getAll(){
             throw new ApiException("Provider Licence is active ");
         }
 
-        double providerAverageReviewRate =reviewService.providerAverageReview(providerId);
-        if (providerAverageReviewRate<2.5){
-            throw new ApiException("Provider Licence renew request is denied due to low rating ");
+        /// this condition only applies to providers with previous warehouses
+        if(!provider.getWareHouses().isEmpty()) {
+            if (provider.getComplainCount()>=5) {
+                throw new ApiException("Provider Licence renew request is denied due to many complains ");
+            }
         }
 
-        if(provider.getComplainCount()>=5){
-            throw new ApiException("Provider Licence renew request is denied due to many complains");
-
-        }
 
         //renew if all conditions are met
         provider.setIsActive(true);
+        provider.setRenewLicenceRequest(false);
         provider.setLicenseDate(LocalDate.now());
         storageProviderRepository.save(provider);
 

@@ -199,17 +199,14 @@ public class ReviewService {
 
         }
 
-
-
         for (WareHouse w:providerWareHouse){
             warehousesReviews=warehousesReviews+calculateAverageRatingForWarehouse(w.getId());
         }
 
-
-
         if (warehousesReviews==0){
             throw new ApiException("provider warehouses average equal to 0 ");
         }
+
         return warehousesReviews/providerWareHouse.size();
     }
 

@@ -12,6 +12,8 @@ public interface ProviderComplaintRepository extends JpaRepository<ProviderCompl
 
     ProviderComplaint findComplaintById(Integer id);
 
+    List<ProviderComplaint> findProviderComplaintByStorageProvider_Id(Integer storageProviderId);
+
 
     @Query("select c from ProviderComplaint c where c.storageProvider.id=?1 And c.isApproved=true")
     List<ProviderComplaint> approvedProviderComplaintMadeByProvider(Integer id);

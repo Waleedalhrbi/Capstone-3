@@ -100,7 +100,7 @@ public class AdminController {
     // Ex endpoint
     /// made by Sahar :12
     /// this endpoint allow admin to renew licence based on conditions
-    @PutMapping("approve-supplier-licence-renew/{adminId}/{providerId}/{requestId}")
+    @PutMapping("approve-supplier-licence-renew/{adminId}/{providerId}")
     public ResponseEntity approveRenewLicenceRequest (@PathVariable Integer adminId, @PathVariable Integer providerId){
         adminService.approveRenewLicenceRequest(adminId,providerId);
         return ResponseEntity.status(200).body(new ApiResponse("The licence renew request is approved successfully"));
