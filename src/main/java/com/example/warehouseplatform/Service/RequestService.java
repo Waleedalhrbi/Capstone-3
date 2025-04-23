@@ -80,19 +80,16 @@ public class RequestService {
         request.setTotal_price(totalPrice);
 
 
-
         requestRepository.save(request);
 
-        String to = supplier.getEmail();
         String subject = "Warehouse Request Confirmation";
         String message = "Dear " + supplier.getUsername() + ",\n\n" +
                 "Your request for a " + request.getStoreSize() + " " + request.getStoreType() +
                 " warehouse has been received.\n\nStart Date: " + request.getStart_date() +
                 "\nEnd Date: " + request.getEnd_date() +
-                "\nTotal Price: " + request.getTotal_price() +
-                "\n\nThank you for using our service!";
+                "\nTotal Price: " + request.getTotal_price() + "Riyals";
 
-        EmailRequest emailRequest = new EmailRequest(to,message, subject);
+        EmailRequest emailRequest = new EmailRequest(supplier.getEmail(),message, subject);
         emailNotificationService.sendEmail(emailRequest);
     }
 

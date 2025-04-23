@@ -31,7 +31,7 @@ public class Supplier {
 
     @NotEmpty(message = "email must not be empty")
     @Email
-    @Column(columnDefinition = "varchar(20) not null")
+    @Column(columnDefinition = "varchar(60) not null")
     private String email;
 
     @NotEmpty(message = "phone number must not be empty")

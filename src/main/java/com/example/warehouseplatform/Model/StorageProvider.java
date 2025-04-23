@@ -32,13 +32,14 @@ public class StorageProvider {
 
     @NotEmpty(message = "email must not be empty")
     @Email
-    @Column(columnDefinition = "varchar(30) not null")
+    @Column(columnDefinition = "varchar(60) not null")
     private String email;
 
     @NotEmpty(message = "phone number must not be empty")
     @Column(columnDefinition = "varchar(10) not null")
     private String phoneNumber;
-    @AssertFalse
+
+
     @JsonIgnore
     private Boolean isActive;
 

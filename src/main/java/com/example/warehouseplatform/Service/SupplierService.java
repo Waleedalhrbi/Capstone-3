@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class SupplierService {
     }
 
 
-    public void notifyEndOfRequest(Integer requestId) {
+    public void notifyEndOfBooking(Integer requestId) {
         Request request = requestRepository.findRequestById(requestId); // assuming you have this method
 
         if (request == null) {
@@ -95,7 +96,77 @@ public class SupplierService {
         }
     }
 
+    public void applyLateFineToSupplier(Integer requestId) {
+        Request request = requestRepository.findRequestById(requestId);
+        if (request == null) {
+            throw new ApiException("Request not found");
+        }
 
+        if (request.getEnd_date() == null) {
+            throw new ApiException("End date is missing for this request");
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate endDate = request.getEnd_date();
+
+        if (today.isAfter(endDate)) {
+            long daysLate = java.time.temporal.ChronoUnit.DAYS.between(endDate, today);
+            int finePerDay = 100;
+            int totalFine = (int) daysLate * finePerDay;
+
+            int updatedPrice = request.getTotal_price() + totalFine;
+            request.setTotal_price(updatedPrice);
+            requestRepository.save(request);
+
+            Supplier supplier = request.getSupplier();
+            if (supplier == null || supplier.getEmail() == null) {
+                throw new ApiException("Supplier or supplier email not found");
+            }
+
+            String subject = "Late Return Fine Applied";
+            String message = "Dear " + supplier.getUsername() + ",\n\n" +
+                    "You have exceeded the warehouse booking end date (" + endDate + ").\n" +
+                    "A fine of " + totalFine + "Riyals, has been applied for " + daysLate + " extra days.\n\n" +
+                    "Updated Total Price: " + updatedPrice + "Riyals";
+
+            EmailRequest emailRequest = new EmailRequest(supplier.getEmail(), message, subject);
+            emailNotificationService.sendEmail(emailRequest);
+        } else {
+            throw new ApiException("Request is not late — no fine applied");
+        }
+    }
+
+    public void extendBooking(Integer requestId, LocalDate newEndDate) {
+        Request request = requestRepository.findRequestById(requestId);
+        if (request == null) throw new ApiException("Request not found");
+
+        if (newEndDate.isBefore(request.getEnd_date())) {
+            throw new ApiException("New end date must be after current end date");
+        }
+
+        request.setEnd_date(newEndDate);
+        requestRepository.save(request);
+    }
+
+    public void sendReminderBeforeEnd(Integer requestId) {
+        Request request = requestRepository.findRequestById(requestId);
+        if (request == null) throw new ApiException("Request not found");
+
+        LocalDate date = LocalDate.now().plusDays(10);
+        if (date.equals(request.getEnd_date())) {
+            Supplier supplier = request.getSupplier();
+            if (supplier != null) {
+                String subject = "Upcoming Warehouse Booking End Date";
+                String message = "Dear " + supplier.getUsername() + ",\n\nYour booking ends in ten days (" + request.getEnd_date() + ").\n" +
+                        "Please ensure to collect all of your items";
+
+                EmailRequest emailRequest = new EmailRequest(supplier.getEmail(),message, subject);
+                emailNotificationService.sendEmail(emailRequest);
+            }
+        } else {
+            throw new ApiException("Not 10 day before end date");
+        }
+    }
 
     public Integer primaryCalculator(Integer days, String storeSize) {
 

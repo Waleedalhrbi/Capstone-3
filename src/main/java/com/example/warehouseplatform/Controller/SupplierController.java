@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/v1/client")
 @RequiredArgsConstructor
@@ -64,6 +66,37 @@ public class SupplierController {
     @GetMapping("approved-complaints/{id}")
     public ResponseEntity approvedComplaints(@PathVariable Integer id) {
         return ResponseEntity.ok().body(supplierService.getAllApprovedComplain(id));
+    }
+
+    // Ex endpoint
+    // made by Khaled
+    @PostMapping("/notify-booking-end/{requestId}")
+    public ResponseEntity notifyEndOfBooking(@PathVariable Integer requestId) {
+        supplierService.notifyEndOfBooking(requestId);
+        return ResponseEntity.ok().body(new ApiResponse("Supplier notified successfully"));
+    }
+
+    // Ex endpoint
+    // made by Khaled
+    @PutMapping("/extend-booking/{requestId}/{newEndDate}")
+    public ResponseEntity extendBooking(@PathVariable Integer requestId, @PathVariable LocalDate newEndDate) {
+        supplierService.extendBooking(requestId, newEndDate);
+        return ResponseEntity.ok().body(new ApiResponse("Book extended"));
+    }
+    // Ex endpoint
+    // made by Khaled
+    @PostMapping("/late-fine/{requestId}")
+    public ResponseEntity applyLateFineToSupplier(@PathVariable Integer requestId) {
+        supplierService.applyLateFineToSupplier(requestId);
+        return ResponseEntity.ok().body(new ApiResponse("Late fine applied"));
+    }
+
+    // Ex endpoint
+    // made by Khaled
+    @PostMapping("/reminder-before-end/{requestId}")
+    public ResponseEntity sendReminderBeforeEnd(@PathVariable Integer requestId) {
+        supplierService.sendReminderBeforeEnd(requestId);
+        return ResponseEntity.ok().body(new ApiResponse("Supplier reminded successfully"));
     }
 
 

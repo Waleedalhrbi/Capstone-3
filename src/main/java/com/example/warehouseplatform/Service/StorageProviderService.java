@@ -76,10 +76,9 @@ public class StorageProviderService {
 
         }
         provider.setRenewLicenceRequest(true);
+        storageProviderRepository.save(provider);
 
     }
-
-
 
     public List<ProviderComplaint> getAllApprovedComplain(Integer id){
         StorageProvider provider = storageProviderRepository.findStorageProviderById(id);

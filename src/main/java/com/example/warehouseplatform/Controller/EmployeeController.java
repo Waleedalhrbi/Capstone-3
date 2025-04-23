@@ -27,11 +27,6 @@ public class EmployeeController {
         return ResponseEntity.ok().body(new ApiResponse("employee added"));
     }
 
-    @PutMapping("/assign/{employeeId}/{providerId}")
-    public ResponseEntity assignEmployeeToProvider(@PathVariable Integer employeeId, @PathVariable Integer providerId) {
-        employeeService.assignEmployeeToProvider(employeeId, providerId);
-        return ResponseEntity.ok().body(new ApiResponse("employee assigned to the provider"));
-    }
     @PutMapping("/update/{id}")
     public ResponseEntity updateEmployee(@PathVariable Integer id, @Valid @RequestBody Employee employee) {
         employeeService.updateEmployee(id, employee);
@@ -42,5 +37,13 @@ public class EmployeeController {
     public ResponseEntity deleteEmployee(@PathVariable Integer id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.ok().body(new ApiResponse("employee deleted"));
+    }
+
+    // Ex endpoint
+    // made by Khaled
+    @PutMapping("/assign/{employeeId}/{providerId}")
+    public ResponseEntity assignEmployeeToProvider(@PathVariable Integer employeeId, @PathVariable Integer providerId) {
+        employeeService.assignEmployeeToProvider(employeeId, providerId);
+        return ResponseEntity.ok().body(new ApiResponse("employee assigned to the provider"));
     }
 }
