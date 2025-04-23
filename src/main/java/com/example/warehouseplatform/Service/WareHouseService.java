@@ -1,7 +1,8 @@
 package com.example.warehouseplatform.Service;
 
 import com.example.warehouseplatform.Api.ApiException;
-import com.example.warehouseplatform.Model.Employee;
+import com.example.warehouseplatform.DTO.StorageProviderDTO;
+import com.example.warehouseplatform.DTO.WareHouseDTO;
 import com.example.warehouseplatform.Model.StorageProvider;
 import com.example.warehouseplatform.Model.WareHouse;
 import com.example.warehouseplatform.Repository.StorageProviderRepository;
@@ -42,8 +43,8 @@ public List<WareHouse> getAll(){
             throw new ApiException("the wareHouse is not found");
         }
         wareHouse1.setStorageArea(wareHouse.getStorageArea());
-        wareHouse1.setStore_size(wareHouse.getStore_size());
-        wareHouse1.setStore_type(wareHouse.getStore_type());
+        wareHouse1.setStoreSize(wareHouse.getStoreSize());
+        wareHouse1.setStoreType(wareHouse.getStoreType());
         wareHouse1.setPrice(wareHouse.getPrice());
         wareHouse1.setLocation(wareHouse1.getLocation());
         wareHouseRepository.save(wareHouse1);
@@ -70,7 +71,29 @@ public List<WareHouse> getAll(){
 
 
 
+    public WareHouseDTO findMostUsedWareHousesByStoreSize(String storeSize){
 
+    List<WareHouse> wareHousesSameSize= wareHouseRepository.findWareHousesByStoreSize(storeSize);
+    if (wareHousesSameSize.isEmpty()){
+        throw new ApiException("there are no warehouses in this size , available sizes : small , medium , large");
+    }
+    WareHouse mostUsed=wareHousesSameSize.get(0);
+    for (WareHouse w:wareHousesSameSize ){
+        if (w.getUsageCount()>mostUsed.getUsageCount()){
+            mostUsed=w;
+        }
+    }
+
+
+        StorageProvider sP = mostUsed.getStorageProvider();
+        StorageProviderDTO storageProviderDTO = new StorageProviderDTO(sP.getUsername(), sP.getEmail(), sP.getPhoneNumber(), sP.getIsActive());
+
+        return new WareHouseDTO(storageProviderDTO, storeSize, mostUsed.getLocation(), mostUsed.getStorageArea(), mostUsed.getPrice());
+
+
+
+
+    }
 
 
 

@@ -39,9 +39,9 @@ public class Review {
     private LocalDate review_date;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     @JsonIgnore
-    private Client client;
+    private Supplier supplier;
 
 
     @ManyToOne

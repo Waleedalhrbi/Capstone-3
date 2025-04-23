@@ -50,6 +50,12 @@ public class StorageProvider {
     @JsonIgnore
     private LocalDate licenseDate;
 
+
+
+    private Integer complainCount=0;
+
+    private Boolean renewLicenceRequest;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageProvider")
     private Set<Employee> employees;
 
@@ -57,5 +63,5 @@ public class StorageProvider {
     private Set<WareHouse> wareHouses;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageProvider")
-    private Set<Complaint> complaints;
+    private Set<ProviderComplaint> complaints;
 }

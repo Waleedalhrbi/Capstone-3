@@ -1,8 +1,10 @@
 package com.example.warehouseplatform.Service;
 
 import com.example.warehouseplatform.DTO.StorageProviderDTO;
+import com.example.warehouseplatform.Model.ProviderComplaint;
 import com.example.warehouseplatform.Model.StorageProvider;
 import com.example.warehouseplatform.Api.ApiException;
+import com.example.warehouseplatform.Repository.ProviderComplaintRepository;
 import com.example.warehouseplatform.Repository.StorageProviderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class StorageProviderService {
 
     private final StorageProviderRepository storageProviderRepository;
+    private final ProviderComplaintRepository providerComplaintRepository;
 
     public List<StorageProvider> getAllProviders() {
         return storageProviderRepository.findAll();
@@ -33,6 +36,7 @@ public class StorageProviderService {
 
 
     public void addProvider(StorageProvider storageProvider) {
+        storageProvider.setIsActive(false);
         storageProvider.setLicenseDate(LocalDate.now());
         storageProviderRepository.save(storageProvider);
     }
@@ -58,4 +62,32 @@ public class StorageProviderService {
 
         storageProviderRepository.deleteById(id);
     }
+
+
+
+
+    public void renewLicenceRequest(Integer providerId){
+        StorageProvider provider = storageProviderRepository.findStorageProviderById(providerId);
+        if(provider == null) throw new ApiException("provider not found");
+
+        if (provider.getIsActive()){
+            throw new ApiException("provider licence is active");
+
+        }
+        provider.setRenewLicenceRequest(true);
+
+    }
+
+
+
+    public List<ProviderComplaint> getAllApprovedComplain(Integer id){
+        StorageProvider provider = storageProviderRepository.findStorageProviderById(id);
+        if(provider == null) throw new ApiException("provider not found");
+
+        return providerComplaintRepository.approvedProviderComplaintMadeByProvider(id);
+
+    }
+
+
+
 }

@@ -9,14 +9,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Complaint {
+public class SupplierComplaint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +25,6 @@ public class Complaint {
     private String complaintMessage;
 
     @AssertFalse
-    @JsonIgnore
     private Boolean isApproved;
 
 
@@ -37,6 +34,8 @@ public class Complaint {
     private Request request;
 
     @ManyToOne
-    @JoinColumn(name = "storage_provider_id", referencedColumnName = "id")
-    private StorageProvider storageProvider;
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Supplier supplier;
+
 }

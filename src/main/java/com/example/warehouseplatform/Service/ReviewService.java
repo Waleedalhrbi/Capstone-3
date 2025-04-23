@@ -1,12 +1,8 @@
 package com.example.warehouseplatform.Service;
 
 import com.example.warehouseplatform.Api.ApiException;
-import com.example.warehouseplatform.Model.Client;
-import com.example.warehouseplatform.Model.Request;
-import com.example.warehouseplatform.Model.Review;
-import com.example.warehouseplatform.Repository.ClientRepository;
-import com.example.warehouseplatform.Repository.RequestRepository;
-import com.example.warehouseplatform.Repository.ReviewRepository;
+import com.example.warehouseplatform.Model.*;
+import com.example.warehouseplatform.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +17,21 @@ import java.util.Map;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final ClientService clientService;
+    private final SupplierRepository supplierRepository;
     private final RequestService requestService;
     private final RequestRepository requestRepository;
+    private final StorageProviderRepository storageProviderRepository;
+    private final WareHouseRepository wareHouseRepository;
+
 
     public List<Review> getAllReviews() {
         return reviewRepository.findAll();
     }
 
     public void addReview(Review review) {
-        Client client = clientService.getClientById(review.getClient().getId());
-        if (client == null) {
-            throw new ApiException("Client not found");
+        Supplier supplier = supplierRepository.findSupplierById(review.getSupplier().getId());
+        if (supplier == null) {
+            throw new ApiException("supplier not found");
         }
 
         Request request = requestService.getRequestById(review.getRequest().getId());
@@ -45,7 +44,7 @@ public class ReviewService {
         }
 
         review.setReview_date(LocalDate.now());
-        review.setClient(client);
+        review.setSupplier(supplier);
         review.setRequest(request);
         reviewRepository.save(review);
     }
@@ -144,11 +143,11 @@ public class ReviewService {
         return sortedRequests;
     }
 
-    public List<Review> getReviewsByClientId(Integer clientId) {
-        List<Review> reviews = reviewRepository.findAllByClientId(clientId);
+    public List<Review> getReviewsBySupplierId(Integer supplierId) {
+        List<Review> reviews = reviewRepository.findAllBySupplier_Id(supplierId);
 
         if (reviews.isEmpty()) {
-            throw new ApiException("No reviews found for this client");
+            throw new ApiException("No reviews found for this supplier");
         }
 
         return reviews;
@@ -173,4 +172,26 @@ public class ReviewService {
 
         return reviews;
     }
+
+
+    public Double providerAverageReview(Integer providerId){
+        StorageProvider provider = storageProviderRepository.findStorageProviderById(providerId);
+        if(provider == null){
+            throw new ApiException("provider not found");
+        }
+        Double averageRate;
+        Double warehousesReviews=0.0;
+        List<WareHouse> providerWareHouse = wareHouseRepository.getWareHouseByStorageProvider_Id(providerId);
+        for (WareHouse w:providerWareHouse){
+            warehousesReviews=warehousesReviews+calculateAverageRatingForWarehouse(w.getId());
+        }
+        return averageRate= warehousesReviews/providerWareHouse.size();
+    }
+
+
+
+
+
+
+
 }

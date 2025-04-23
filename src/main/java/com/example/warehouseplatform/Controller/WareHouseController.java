@@ -27,7 +27,7 @@ public class WareHouseController {
 
 
 
-    @PostMapping("add")
+    @PostMapping("add/{providerId}")
     public ResponseEntity addWareHouse (@Valid @RequestBody WareHouse wareHouse, @PathVariable Integer providerId){
         wareHouseService.addWareHouse(wareHouse, providerId);
         return ResponseEntity.status(200).body(new ApiResponse("wareHouse added successfully"));
@@ -49,6 +49,15 @@ public class WareHouseController {
         return ResponseEntity.status(200).body(new ApiResponse("wareHouse deleted successfully"));
     }
 
+
+    // Ex endpoint
+    /// made by Sahar :1
+    /// an endpoint to get top used warehouses based on their size and return the storage provider for this warehouse
+    /// and information about it
+    @GetMapping("most-used/{storeSize}")
+    public ResponseEntity findMostUsedWareHousesByStoreSize (@PathVariable String storeSize){
+        return  ResponseEntity.status(200).body(wareHouseService.findMostUsedWareHousesByStoreSize(storeSize));
+    }
 
 
 

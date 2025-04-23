@@ -1,11 +1,11 @@
 package com.example.warehouseplatform.Repository;
 
-import com.example.warehouseplatform.Model.Client;
+import com.example.warehouseplatform.Model.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Integer> {
+public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
 
-    Client findClientById(Integer id);
+    Supplier findSupplierById(Integer id);
 }

@@ -3,6 +3,7 @@ package com.example.warehouseplatform.Controller;
 import com.example.warehouseplatform.Model.Employee;
 import com.example.warehouseplatform.Api.ApiResponse;
 import com.example.warehouseplatform.Service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity addEmployee(@RequestBody Employee employee) {
+    public ResponseEntity addEmployee(@Valid @RequestBody Employee employee) {
         employeeService.addEmployee(employee);
         return ResponseEntity.ok().body(new ApiResponse("employee added"));
     }
@@ -32,7 +33,7 @@ public class EmployeeController {
         return ResponseEntity.ok().body(new ApiResponse("employee assigned to the provider"));
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
+    public ResponseEntity updateEmployee(@PathVariable Integer id, @Valid @RequestBody Employee employee) {
         employeeService.updateEmployee(id, employee);
         return ResponseEntity.ok().body(new ApiResponse("employee updated"));
     }

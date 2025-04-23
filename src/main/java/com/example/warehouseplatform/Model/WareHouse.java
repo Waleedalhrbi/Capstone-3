@@ -25,13 +25,13 @@ public class WareHouse {
     @NotEmpty(message = "Please enter store type")
     @Pattern(regexp = "refrigerated|closed|open")
     @Column(columnDefinition = "VARCHAR(25) NOT NULL")
-    private String store_type;
+    private String storeType;
 
 
     @NotEmpty(message = "the store type should not be null")
     @Pattern(regexp = "^(?i)(Small|Medium|Large)$")
     @Column(columnDefinition = "varchar(30) not null")
-    private String store_size;
+    private String storeSize;
 
 
     @NotEmpty(message = "the location should not be empty")
@@ -51,7 +51,7 @@ public class WareHouse {
     /// per day
     @NotNull(message = "the price should not be empty")
     @Positive(message = "the Price  should be a correct number ")
-    @Min(value = 500, message = "the minimum price for a day is 500 SAR")
+    @Min(value = 100, message = "the minimum price for a day is 500 SAR")
     @Column(columnDefinition = "int not null ")
     private Integer price;
 

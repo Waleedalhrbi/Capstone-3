@@ -14,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review,Integer> {
 
     List<Review> findAllByRequestIn(List<Request> requests);
 
-    List<Review> findAllByClientId(Integer clientId);
+    List<Review> findAllBySupplier_Id(Integer supplierId);
 
 
 }

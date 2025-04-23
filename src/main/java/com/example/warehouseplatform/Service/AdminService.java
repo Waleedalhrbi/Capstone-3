@@ -2,22 +2,24 @@ package com.example.warehouseplatform.Service;
 
 import com.example.warehouseplatform.Api.ApiException;
 import com.example.warehouseplatform.DTO.EmailRequest;
-import com.example.warehouseplatform.Model.Admin;
-import com.example.warehouseplatform.Model.StorageProvider;
-import com.example.warehouseplatform.Repository.AdminRepository;
-import com.example.warehouseplatform.Repository.StorageProviderRepository;
+import com.example.warehouseplatform.Model.*;
+import com.example.warehouseplatform.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
 
-private final AdminRepository adminRepository;
-private final StorageProviderRepository storageProviderRepository;
-private final EmailNotificationService emailNotificationService;
+    private final AdminRepository adminRepository;
+    private final StorageProviderRepository storageProviderRepository;
+    private final SupplierRepository supplierRepository;
+    private final SupplierComplaintRepository supplierComplaintRepository;
+    private final EmailNotificationService emailNotificationService;
+    private final ProviderComplaintRepository providerComplaintRepository;
 
 
 public List<Admin> getAll(){
@@ -80,6 +82,124 @@ public List<Admin> getAll(){
         EmailRequest request = new EmailRequest(storageProvider.getEmail(), message, subject);
         emailNotificationService.sendEmail(request);
     }
+
+
+    public void validateStorageProviderLicense(Integer adminId, Integer providerId) {
+        Admin admin = adminRepository.findAdminById(adminId);
+        if (admin == null) {
+            throw new ApiException("the admin is not found");
+        }
+        StorageProvider provider = storageProviderRepository.findStorageProviderById(providerId);
+        if (provider == null) {
+            throw new ApiException("the provider is not found");
+        }
+
+        if (provider.getLicenseDate().isBefore(LocalDate.now().minusDays(365))) {
+            throw new ApiException("the provider license is expired, file a request to renew the licence");
+
+        }
+
+
+        provider.setIsActive(true);
+        storageProviderRepository.save(provider);
+    }
+
+
+
+
+
+    public void riseSupplierComplaintCount(Integer id){
+        Supplier supplier = supplierRepository.findSupplierById(id);
+        if (supplier == null) {
+            throw new ApiException("Supplier not found");
+        }
+        supplier.setComplainCount(supplier.getComplainCount()+1);
+        if (supplier.getComplainCount()>5){
+            supplier.setIsBlackListed(true);
+
+        }
+
+
+    }
+
+
+    public void approveStorageProviderComplaint(Integer adminId, Integer providerId, Integer complainId){
+        Admin admin = adminRepository.findAdminById(adminId);
+        if (admin == null) {
+            throw new ApiException("the admin is not found");
+        }
+
+
+        StorageProvider provider = storageProviderRepository.findStorageProviderById(providerId);
+        if (provider == null) {
+            throw new ApiException("Provider not found");
+        }
+
+        ProviderComplaint complaint= providerComplaintRepository.getComplainBYComplainIdAndProviderId(complainId,providerId);
+        if (complaint == null) {
+            throw new ApiException("the complaint is not found");
+        }
+
+        complaint.setIsApproved(true);
+        /// get supplier that made the request that has complaint
+        Supplier supplier = supplierRepository.findSupplierById(complaint.getRequest().getSupplier().getId());
+        riseSupplierComplaintCount(supplier.getId());
+        supplierRepository.save(supplier);
+        providerComplaintRepository.save(complaint);
+
+
+    }
+
+    public void riseProviderComplaintCount(Integer id){
+        StorageProvider provider= storageProviderRepository.findStorageProviderById(id);
+        provider.setComplainCount(provider.getComplainCount()+1);
+        if (provider.getComplainCount()>5) {
+            provider.setIsActive(false); // assign provider licence to false
+        }
+
+    }
+
+
+    public void approveSupplierComplain(Integer adminId, Integer supplierId , Integer complainId){
+
+        Admin admin = adminRepository.findAdminById(adminId);
+
+        if (admin == null) {
+            throw new ApiException("the admin is not found");
+        }
+
+
+        Supplier supplier = supplierRepository.findSupplierById(supplierId);
+        if (supplier == null) {
+            throw new ApiException("Supplier not found");
+        }
+        ///  check if the complaint is made by th supplier snd if it is not null
+        SupplierComplaint  complaint= supplierComplaintRepository.getComplainBySupplierIdAndComplainId(supplierId,complainId);
+        if (complaint == null) {
+            throw new ApiException("the complaint is not found");
+        }
+        /// get providers that owns the warehouse that in the request that have complain
+        StorageProvider provider =complaint.getRequest().getWareHouse().getStorageProvider();
+        riseProviderComplaintCount(provider.getId());
+        complaint.setIsApproved(true);
+        storageProviderRepository.save(provider);
+        supplierComplaintRepository.save(complaint);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

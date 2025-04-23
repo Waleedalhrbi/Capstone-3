@@ -3,11 +3,12 @@ package com.example.warehouseplatform.Service;
 import com.example.warehouseplatform.Api.ApiException;
 import com.example.warehouseplatform.DTO.EmailRequest;
 import com.example.warehouseplatform.Model.BookedDate;
-import com.example.warehouseplatform.Model.Client;
+import com.example.warehouseplatform.Model.Supplier;
 import com.example.warehouseplatform.Model.Request;
 import com.example.warehouseplatform.Model.WareHouse;
 import com.example.warehouseplatform.Repository.BookedDateRepository;
 import com.example.warehouseplatform.Repository.RequestRepository;
+import com.example.warehouseplatform.Repository.SupplierRepository;
 import com.example.warehouseplatform.Repository.WareHouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.List;
 public class RequestService {
 
     private final RequestRepository requestRepository;
-    private final ClientService clientService;
+    private final SupplierRepository supplierRepository;
     private final WareHouseRepository wareHouseRepository;
     private final BookedDateRepository bookedDateRepository;
     private final EmailNotificationService emailNotificationService;
@@ -29,10 +30,16 @@ public class RequestService {
         return requestRepository.findAll();
     }
 
-    public void addRequest(Request request, Integer clientId, Integer warehouseId) {
+    public void addRequest(Request request, Integer supplierId, Integer warehouseId) {
 
-        Client client = clientService.getClientById(clientId);
-        if (client == null) throw new ApiException("Client not found");
+        Supplier supplier = supplierRepository.findSupplierById(supplierId);
+        if (supplier == null) throw new ApiException("supplier not found");
+
+
+        /// the black listed client cant add requests
+        if (supplier.getIsBlackListed()) throw new ApiException("supplier is black listed");
+
+
 
         WareHouse wareHouse = wareHouseRepository.findWareHouseById(warehouseId);
         if (wareHouse == null) throw new ApiException("Warehouse not found");
@@ -54,8 +61,8 @@ public class RequestService {
         }
 
 
-        if (!wareHouse.getStore_type().equalsIgnoreCase(request.getStore_type()) ||
-                !wareHouse.getStore_size().equalsIgnoreCase(request.getStore_size())) {
+        if (!wareHouse.getStoreType().equalsIgnoreCase(request.getStoreType()) ||
+                !wareHouse.getStoreSize().equalsIgnoreCase(request.getStoreSize())) {
             throw new ApiException("Store type or size does not match the warehouse");
         }
 
@@ -67,7 +74,7 @@ public class RequestService {
 
 
         request.setRequest_date(LocalDate.now());
-        request.setClient(client);
+        request.setSupplier(supplier);
         request.setWareHouse(wareHouse);
         wareHouse.setUsageCount(wareHouse.getUsageCount() + 1);
         request.setTotal_price(totalPrice);
@@ -76,10 +83,10 @@ public class RequestService {
 
         requestRepository.save(request);
 
-        String to = client.getEmail();
+        String to = supplier.getEmail();
         String subject = "Warehouse Request Confirmation";
-        String message = "Dear " + client.getUsername() + ",\n\n" +
-                "Your request for a " + request.getStore_size() + " " + request.getStore_type() +
+        String message = "Dear " + supplier.getUsername() + ",\n\n" +
+                "Your request for a " + request.getStoreSize() + " " + request.getStoreType() +
                 " warehouse has been received.\n\nStart Date: " + request.getStart_date() +
                 "\nEnd Date: " + request.getEnd_date() +
                 "\nTotal Price: " + request.getTotal_price() +
@@ -113,16 +120,16 @@ public class RequestService {
             throw new ApiException("Selected dates are already booked");
         }
 
-        if (!wareHouse.getStore_type().equalsIgnoreCase(updatedRequest.getStore_type()) ||
-                !wareHouse.getStore_size().equalsIgnoreCase(updatedRequest.getStore_size())) {
+        if (!wareHouse.getStoreType().equalsIgnoreCase(updatedRequest.getStoreType()) ||
+                !wareHouse.getStoreSize().equalsIgnoreCase(updatedRequest.getStoreSize())) {
             throw new ApiException("Store type or size does not match the warehouse");
         }
 
         int totalPrice = (int) days * wareHouse.getPrice();
 
 
-        existingRequest.setStore_size(updatedRequest.getStore_size());
-        existingRequest.setStore_type(updatedRequest.getStore_type());
+        existingRequest.setStoreSize(updatedRequest.getStoreSize());
+        existingRequest.setStoreType(updatedRequest.getStoreType());
         existingRequest.setRequest_employee(updatedRequest.getRequest_employee());
         existingRequest.setStart_date(updatedRequest.getStart_date());
         existingRequest.setEnd_date(updatedRequest.getEnd_date());

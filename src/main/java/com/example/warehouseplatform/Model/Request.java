@@ -3,7 +3,6 @@ package com.example.warehouseplatform.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -29,13 +28,13 @@ public class Request {
     @NotEmpty(message = "the store type should not be null")
     @Pattern(regexp = "^(?i)(Small|Medium|Large)$")
     @Column(columnDefinition = "varchar(30) not null")
-    private String store_size;
+    private String storeSize;
 
 
     @NotEmpty(message = "Please enter store type")
     @Pattern(regexp = "refrigerated|closed|open")
     @Column(columnDefinition = "VARCHAR(25) NOT NULL")
-    private String store_type;
+    private String storeType;
 
     @NotNull(message = "Please enter if you request employee ")
     private Boolean request_employee;
@@ -50,9 +49,9 @@ public class Request {
     private Integer Total_price;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JoinColumn(name ="supplier_id", referencedColumnName = "id")
     @JsonIgnore
-    private Client client;
+    private Supplier supplier;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate request_date;
@@ -66,5 +65,8 @@ public class Request {
     private WareHouse wareHouse;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "request")
-    private Set<Complaint> complaints;
+    private Set<ProviderComplaint> providerComplaints;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "request")
+    private Set<SupplierComplaint> supplierComplaints;
 }

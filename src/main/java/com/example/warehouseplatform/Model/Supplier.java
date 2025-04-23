@@ -3,7 +3,6 @@ package com.example.warehouseplatform.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client {
+public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +39,22 @@ public class Client {
     private String phoneNumber;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+
+
+    private Integer complainCount=0;
+    private Boolean isBlackListed;
+
+
+
+
+    @OneToMany(cascade =CascadeType.ALL, mappedBy = "supplier")
     private Set<Request> requests;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplier")
     private Set<Review> reviews;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplier")
+    private Set<SupplierComplaint> complaints;
+
 }

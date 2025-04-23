@@ -51,6 +51,7 @@ public class AdminController {
         return ResponseEntity.status(200).body(new ApiResponse("The Admin deleted successfully"));
     }
 
+
     @PostMapping("/notify/{providerId}/{adminId}")
     public ResponseEntity notifyExpiredLicense(@PathVariable Integer providerId, @PathVariable Integer adminId) {
         adminService.notifyExpiredLicense(providerId, adminId);
@@ -58,6 +59,39 @@ public class AdminController {
     }
 
 
+
+    // Ex endpoint
+    /// made by Sahar :3
+    /// an endpoint to validate Storage Provider License and assign them as
+    ///  active to start using the system
+    @PutMapping("validate-licence/{adminId}/{providerId}")
+    public ResponseEntity validateStorageProviderLicense (@PathVariable Integer adminId, @PathVariable Integer providerId){
+        adminService.validateStorageProviderLicense(adminId,providerId);
+        return ResponseEntity.status(200).body(new ApiResponse("The storage provider with id :"+providerId+" is confirmed successfully"));
+    }
+
+
+    // Ex endpoint
+    /// made by Sahar :6
+    /// an endpoint to approve a supplier complain on a storage provider\
+    /// the complaint is approved ,SP will be inactive after more than 5 complains
+    @PutMapping("approve-supplier-complain/{adminId}/{supplierId}/{requestId}")
+    public ResponseEntity approveSupplierComplain (@PathVariable Integer adminId, @PathVariable Integer supplierId,@PathVariable Integer requestId){
+        adminService.approveSupplierComplain(adminId,supplierId,requestId);
+        return ResponseEntity.status(200).body(new ApiResponse("The complain is approved successfully"));
+    }
+
+
+
+    // Ex endpoint
+    /// made by Sahar :8
+    /// an endpoint to approve a provider complain on a storage provider
+    /// the complaint is approved ,suppliers will be blackListed after 5 complains when black listed they will not be able to add new request
+    @PutMapping("approve-supplier-complain/{adminId}/{providerId}/{requestId}")
+    public ResponseEntity approveStorageProviderComplaint (@PathVariable Integer adminId, @PathVariable Integer providerId,@PathVariable Integer requestId){
+        adminService.approveStorageProviderComplaint(adminId,providerId,requestId);
+        return ResponseEntity.status(200).body(new ApiResponse("The complain is approved successfully"));
+    }
 
 
 

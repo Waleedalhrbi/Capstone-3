@@ -65,9 +65,9 @@ public class ReviewController {
     }
 
     // Ex endpoint
-    @GetMapping("/get-reviews-by-client/{clientId}")
-    public ResponseEntity getReviewsByClientId(@PathVariable Integer clientId) {
-        List<Review> reviews = reviewService.getReviewsByClientId(clientId);
+    @GetMapping("/get-reviews-by-client/{supplierId}")
+    public ResponseEntity getReviewsBySupplierId(@PathVariable Integer supplierId) {
+        List<Review> reviews = reviewService.getReviewsBySupplierId(supplierId);
         return ResponseEntity.status(HttpStatus.OK).body(reviews);
     }
 
@@ -77,4 +77,16 @@ public class ReviewController {
         List<Review> reviews = reviewService.getReviewsByWarehouseIdSortedByDate(wareHouseId);
         return ResponseEntity.status(HttpStatus.OK).body(reviews);
     }
+
+
+
+    // Ex endpoint
+    /// made by Sahar :2
+    /// an endpoint to get the average rate for a storage provider based on the average ratting for each warehouse that belong to the storage provider
+    @GetMapping("/get-average-provider-reviews/{providerId}")
+    public ResponseEntity providerAverageReview(@PathVariable Integer providerId) {
+        return ResponseEntity.status(HttpStatus.OK).body(reviewService.providerAverageReview(providerId));
+    }
+
+
 }

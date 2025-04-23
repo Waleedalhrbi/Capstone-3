@@ -2,13 +2,12 @@ package com.example.warehouseplatform.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ClientDTO {
+public class SupplierDTO {
 
     @NotEmpty
     private String username;
