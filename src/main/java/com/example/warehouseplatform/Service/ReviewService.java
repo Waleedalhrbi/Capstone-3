@@ -179,13 +179,26 @@ public class ReviewService {
         if(provider == null){
             throw new ApiException("provider not found");
         }
-        Double averageRate;
         Double warehousesReviews=0.0;
         List<WareHouse> providerWareHouse = wareHouseRepository.getWareHouseByStorageProvider_Id(providerId);
+
+        if (providerWareHouse.isEmpty()){
+            throw new ApiException("provider does not have any warehouses added in the system ");
+
+        }
+
+
+
         for (WareHouse w:providerWareHouse){
             warehousesReviews=warehousesReviews+calculateAverageRatingForWarehouse(w.getId());
         }
-        return averageRate= warehousesReviews/providerWareHouse.size();
+
+
+
+        if (warehousesReviews==0){
+            throw new ApiException("provider warehouses average equal to 0 ");
+        }
+        return warehousesReviews/providerWareHouse.size();
     }
 
 
