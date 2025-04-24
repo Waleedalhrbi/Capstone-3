@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -31,28 +32,18 @@ public class RequestService {
     }
 
     public void addRequest(Request request, Integer supplierId, Integer warehouseId) {
-
         Supplier supplier = supplierRepository.findSupplierById(supplierId);
         if (supplier == null) throw new ApiException("supplier not found");
 
-
-        /// the black listed client cant add requests
         if (supplier.getIsBlackListed()) throw new ApiException("supplier is black listed");
-
-
 
         WareHouse wareHouse = wareHouseRepository.findWareHouseById(warehouseId);
         if (wareHouse == null) throw new ApiException("Warehouse not found");
 
-
-        long days = java.time.temporal.ChronoUnit.DAYS.between(request.getStart_date(), request.getEnd_date());
+        long days = ChronoUnit.DAYS.between(request.getStart_date(), request.getEnd_date());
         if (days <= 0) {
             throw new ApiException("End date must be after start date");
         }
-
-
-        int totalPrice = (int) days * wareHouse.getPrice();
-
 
         boolean isBooked = bookedDateRepository.existsByStartDateLessThanEqualAndEndDateGreaterThanEqual(
                 request.getEnd_date(), request.getStart_date());
@@ -60,38 +51,32 @@ public class RequestService {
             throw new ApiException("Selected dates are already booked");
         }
 
-
-        if (!wareHouse.getStoreType().equalsIgnoreCase(request.getStoreType()) ||
-                !wareHouse.getStoreSize().equalsIgnoreCase(request.getStoreSize())) {
-            throw new ApiException("Store type or size does not match the warehouse");
-        }
-
+        int totalPrice = (int) days * wareHouse.getPrice();
 
         BookedDate bookedDate = new BookedDate();
         bookedDate.setStartDate(request.getStart_date());
         bookedDate.setEndDate(request.getEnd_date());
         bookedDateRepository.save(bookedDate);
 
-
         request.setRequest_date(LocalDate.now());
         request.setSupplier(supplier);
         request.setWareHouse(wareHouse);
-        wareHouse.setUsageCount(wareHouse.getUsageCount() + 1);
         request.setTotal_price(totalPrice);
-
+        wareHouse.setUsageCount(wareHouse.getUsageCount() + 1);
 
         requestRepository.save(request);
 
         String subject = "Warehouse Request Confirmation";
         String message = "Dear " + supplier.getUsername() + ",\n\n" +
-                "Your request for a " + request.getStoreSize() + " " + request.getStoreType() +
+                "Your request for a " + wareHouse.getStoreSize() + " " + wareHouse.getStoreType() +
                 " warehouse has been received.\n\nStart Date: " + request.getStart_date() +
                 "\nEnd Date: " + request.getEnd_date() +
-                "\nTotal Price: " + request.getTotal_price() + "Riyals";
+                "\nTotal Price: " + request.getTotal_price() + " Riyals";
 
-        EmailRequest emailRequest = new EmailRequest(supplier.getEmail(),message, subject);
+        EmailRequest emailRequest = new EmailRequest(supplier.getEmail(), message, subject);
         emailNotificationService.sendEmail(emailRequest);
     }
+
 
 
     public void updateRequest(Integer id, Request updatedRequest) {
@@ -105,28 +90,20 @@ public class RequestService {
             throw new ApiException("Warehouse not found");
         }
 
-        long days = java.time.temporal.ChronoUnit.DAYS.between(updatedRequest.getStart_date(), updatedRequest.getEnd_date());
+        long days = ChronoUnit.DAYS.between(updatedRequest.getStart_date(), updatedRequest.getEnd_date());
         if (days <= 0) {
             throw new ApiException("End date must be after start date");
         }
 
-
         boolean isBooked = bookedDateRepository.existsByStartDateLessThanEqualAndEndDateGreaterThanEqual(
                 updatedRequest.getEnd_date(), updatedRequest.getStart_date());
+
         if (isBooked && !updatedRequest.getStart_date().equals(existingRequest.getStart_date())) {
             throw new ApiException("Selected dates are already booked");
         }
 
-        if (!wareHouse.getStoreType().equalsIgnoreCase(updatedRequest.getStoreType()) ||
-                !wareHouse.getStoreSize().equalsIgnoreCase(updatedRequest.getStoreSize())) {
-            throw new ApiException("Store type or size does not match the warehouse");
-        }
-
         int totalPrice = (int) days * wareHouse.getPrice();
 
-
-        existingRequest.setStoreSize(updatedRequest.getStoreSize());
-        existingRequest.setStoreType(updatedRequest.getStoreType());
         existingRequest.setRequest_employee(updatedRequest.getRequest_employee());
         existingRequest.setStart_date(updatedRequest.getStart_date());
         existingRequest.setEnd_date(updatedRequest.getEnd_date());
@@ -134,6 +111,7 @@ public class RequestService {
 
         requestRepository.save(existingRequest);
     }
+
 
     public void deleteRequest(Integer id) {
         Request request = requestRepository.findRequestById(id);
@@ -188,9 +166,6 @@ public class RequestService {
         }
     }
 
-    public List<Request> getRequestsByStoreType(String storeType) {
-        return requestRepository.findAllByStoreType(storeType);
-    }
 
 
 }

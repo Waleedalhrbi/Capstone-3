@@ -18,5 +18,4 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
 
     List<Request> findRequestsByWareHouseId(Integer id);
 
-    List<Request> findAllByStoreType(String storeType);
 }

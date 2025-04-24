@@ -88,7 +88,7 @@ public class AdminController {
     /// made by Sahar :8
     /// an endpoint to approve a provider complain on a storage provider
     /// the complaint is approved ,suppliers will be blackListed after 5 complains when black listed they will not be able to add new request
-    @PutMapping("approve-supplier-complain/{adminId}/{providerId}/{requestId}")
+    @PutMapping("approve-storage-complain/{adminId}/{providerId}/{requestId}")
     public ResponseEntity approveStorageProviderComplaint (@PathVariable Integer adminId, @PathVariable Integer providerId,@PathVariable Integer requestId){
         adminService.approveStorageProviderComplaint(adminId,providerId,requestId);
         return ResponseEntity.status(200).body(new ApiResponse("The complain is approved successfully"));

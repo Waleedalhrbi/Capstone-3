@@ -59,11 +59,7 @@ public class RequestController {
         return ResponseEntity.ok().body(new ApiResponse("The selected dates are available for booking."));
     }
 
-    // Ex endpoint
-    @GetMapping("/get-type/{type}")
-    public ResponseEntity getRequestsByStoreType(@PathVariable String type) {
-        return ResponseEntity.ok(requestService.getRequestsByStoreType(type));
-    }
+
 
 
 }

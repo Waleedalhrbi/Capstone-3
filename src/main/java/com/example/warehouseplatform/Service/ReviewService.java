@@ -52,6 +52,10 @@ public class ReviewService {
         }
 
 
+        if (LocalDate.now().isBefore(request.getStart_date())) {
+            throw new ApiException("Cannot add a review before the rental period starts");
+        }
+
         review.setReview_date(LocalDate.now());
         review.setSupplier(supplier);
         review.setRequest(request);
